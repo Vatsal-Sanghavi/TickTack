@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Tic Tac</string>
+    <string name="reset">reset</string>
+    <string name="user_win">Hurray! You win.</string>
+    <string name="robot_win">Oops! Robot win.</string>
+    <string name="tie">It\'s a tie</string>
+    <string name="check_result">Check result</string>
+</resources>
