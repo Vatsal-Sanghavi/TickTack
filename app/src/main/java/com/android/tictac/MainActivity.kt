@@ -1,7 +1,6 @@
 package com.android.tictac
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,8 +18,8 @@ class MainActivity : AppCompatActivity() {
     private var random = Random()
 
     companion object {
-        const val BOX_GRID_NO = 3
-        const val TOT_GRIDS = (BOX_GRID_NO * BOX_GRID_NO)
+        private var BOX_GRID_NO = 3
+        private var TOT_GRIDS = (BOX_GRID_NO * BOX_GRID_NO)
         const val EMPTY = 0
         const val USER = 1
         const val ROBOT = 2
@@ -33,11 +32,21 @@ class MainActivity : AppCompatActivity() {
         btnCheck.setOnClickListener {
             // For development purpose only
             checkResult(lastCheckedFor)
+            lastCheckedFor = (if (lastCheckedFor == USER) ROBOT else USER)
         }
         btnReset.setOnClickListener {
             random = Random()
             setupList()
             adapter.notifyDataSetChanged()
+        }
+        chipGroup.setOnCheckedChangeListener { group, checkedId ->
+            BOX_GRID_NO = when (checkedId) {
+                R.id.chip1 -> 3
+                R.id.chip2 -> 4
+                else -> 5
+            }
+            TOT_GRIDS = (BOX_GRID_NO * BOX_GRID_NO)
+            setupRecyclerView()
         }
     }
 
@@ -59,14 +68,15 @@ class MainActivity : AppCompatActivity() {
                 ++totTurnCount
                 if (resultDeclared) return
                 arrayList[position] = USER
-                if (totTurnCount == TOT_GRIDS) {
-                    resultDeclared = true
-                    tvResult.text = getString(R.string.tie)
-                } else if ((ceil(totTurnCount / 2f) >= BOX_GRID_NO)) {
+                if ((ceil(totTurnCount / 2f) >= BOX_GRID_NO)) {
                     resultDeclared = checkResult(USER)
                     if (resultDeclared) tvResult.text = getString(R.string.user_win)
                 }
                 takeRobotTurn()
+                if (totTurnCount == TOT_GRIDS && !resultDeclared) {
+                    resultDeclared = true
+                    tvResult.text = getString(R.string.tie)
+                }
                 adapter.notifyDataSetChanged()
             }
         })
@@ -75,10 +85,34 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkResult(userType: Int): Boolean {
         lastCheckedFor = userType
-        Toast.makeText(this, "Check result", Toast.LENGTH_LONG).show()
+//        Toast.makeText(this, "Check result", Toast.LENGTH_LONG).show()
         // Check for diagonal occurrences
         if (diagonalCheck(false, userType)) return true
         if (diagonalCheck(true, userType)) return true
+        if (rowColumnCheck(userType)) return true
+        return false
+    }
+
+    private fun rowColumnCheck(userType: Int): Boolean {
+        var matchCount: Int
+        for (row in 0 until BOX_GRID_NO) {
+            matchCount = 0
+            for (column in 0 until BOX_GRID_NO) {
+                if (arrayList[((row) * BOX_GRID_NO) + column] == userType) {
+                    ++matchCount
+                    if (matchCount == BOX_GRID_NO) return true
+                }
+            }
+        }
+        for (column in 0 until BOX_GRID_NO) {
+            matchCount = 0
+            for (row in 0 until BOX_GRID_NO) {
+                if (arrayList[((row) * BOX_GRID_NO) + column] == userType) {
+                    ++matchCount
+                    if (matchCount == BOX_GRID_NO) return true
+                }
+            }
+        }
         return false
     }
 
@@ -93,6 +127,7 @@ class MainActivity : AppCompatActivity() {
                             --matchingColumn
                             ++matchCount
                             if (matchCount == BOX_GRID_NO) return true
+                            else break
                         }
                     }
                 }

@@ -5,4 +5,7 @@
     <string name="robot_win">Oops! Robot win.</string>
     <string name="tie">It\'s a tie</string>
     <string name="check_result">Check result</string>
+    <string name="_4_x_4">4 X 4</string>
+    <string name="_3_x_3">3 X 3</string>
+    <string name="_5_x_5">5 X 5</string>
 </resources>
