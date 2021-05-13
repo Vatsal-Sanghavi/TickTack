@@ -2,10 +2,15 @@
     <string name="app_name">Tic Tac</string>
     <string name="reset">reset</string>
     <string name="user_win">Hurray! You win.</string>
+    <string name="player_win">Hurray! %s win.</string>
+    <string name="player1">Player 1</string>
+    <string name="player2">Player 2</string>
     <string name="robot_win">Oops! Robot win.</string>
     <string name="tie">It\'s a tie</string>
     <string name="check_result">Check result</string>
     <string name="_4_x_4">4 X 4</string>
     <string name="_3_x_3">3 X 3</string>
     <string name="_5_x_5">5 X 5</string>
+    <string name="single_player">Single Player</string>
+    <string name="multi_player">Multi Player</string>
 </resources>
