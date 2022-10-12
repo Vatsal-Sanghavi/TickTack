@@ -1,6 +1,6 @@
 # Tic Tac Toe
 Tick Tack Game with __Dynamic Grid size__ &amp; __Robot play__.
-* Game is having two mode
+* Game is having two mode :
   1. Single/Robot play
   2. Two/Multi play
 * In Single play after your each turn, Robot playes.
